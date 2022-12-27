@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Audio</title>
+
+<script>
+
+
+function setSong () {
+  
+  const j = window.location.href;
+
+  const url = new URL(j);
+
+  const fi = url.searchParams.get('audio');
+
+  const WhichSong=fi+"?raw=true"
+
+  document.getElementById('soundtrack').innerHTML=`
+    <audio controls
+      id='background_audio1'>
+        <source src='${WhichSong}' />
+        Your browser does not support the audio element.
+    </audio>
+    <div>${WhichSong}</div>
+  `;
+  }
+
+</script>
+
+</head>
+
+<body>
+
+<div id="soundtrack"></div>
+
+<button onClick="setSong()">play</button>
+
+</body>
+</html>

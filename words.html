@@ -1,7 +1,16 @@
 <!DOCTYPE html>
   <html lang="en">
     <head>
+       <link rel="icon" href="12.png" type="image/icon type">
         <style>
+            .splitscreen {
+            display: flex;
+            }
+
+            .splitscreen .left,
+            .splitscreen .right {
+            flex: 1;
+            }
             .button {
               position: fixed;
               top : 0px;
@@ -42,10 +51,6 @@
             .button:hover span:after {
               opacity: 1;
               right: 0;
-            }
-            table {
-                float:left;
-                width:33%;
             }
         </style>
 
@@ -121,10 +126,17 @@
         
       <button class="button" style="vertical-align:middle" onclick="hide()">Hide</button>
 
-      <div class="container" style="margin-top: 50px;">
-        <table id="app"><tr><td>Table 1</td></tr></table>
-        <table id="myDIV"><tr><td>Table 2</td></tr></table>
+
+      <div class="splitscreen" style="margin-top: 50px;">
+        <div id="app" class="left">
+
+        </div>
+      
+        <div id="myDIV" class="right">
+
+        </div>
       </div>
+
 
   </body>
 

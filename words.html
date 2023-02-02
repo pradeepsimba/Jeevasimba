@@ -1,55 +1,131 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <link rel="icon" href="12.png" type="image/icon type">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Words !!!</title>
-	<script src=
-  "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
-</script>
+  <html lang="en">
+    <head>
+        <style>
+            .button {
+              position: fixed;
+              top : 0px;
+              /* display: inline-block; */
+              border-radius: 4px;
+              background-color: #f4511e;
+              border: none;
+              color: #FFFFFF;
+              text-align: center;
+              font-size: 28px;
+              padding: 5px;
+              width: 100px;
+              transition: all 0.5s;
+              cursor: pointer;
+              margin: 5px;              
+            }
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-</head>
-<body>
-        <div  id="app"></div>
-</body>
-<script>
-function myFunction() {
-var element = document.body;
-element.classList.toggle("dark-mode");
-}
+            .button span {
+              cursor: pointer;
+              /* display: inline-block; */
+              position: relative;
+              transition: 0.5s;
+            }
 
-  var books;
+            .button span:after {
+              content: '\00bb';
+              position: absolute;
+              opacity: 0;
+              top: 0;
+              right: -20px;
+              transition: 0.5s;
+            }
 
-  var xmlhttp = new XMLHttpRequest();
-  var url = "https://raw.githubusercontent.com/Jeevasimba/files/main/egdata/data.json";
+            .button:hover span {
+              padding-right: 25px;
+            }
 
+            .button:hover span:after {
+              opacity: 1;
+              right: 0;
+            }
+            table {
+                float:left;
+                width:33%;
+            }
+        </style>
 
-  xmlhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                        var myArr = JSON.parse(this.responseText);
-                        books = myArr;
-                        render(books);
-                    }
-  };
+        <link rel="icon" href="12.png" type="image/icon type">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Words !!!</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-  xmlhttp.open("GET", url, true);
-  xmlhttp.send();
-
-
-  var render = function(data) {
-    var app = document.getElementById('app');
-    var booksHTMLString = '<ul>'+
-      data.map(function(book){
-        return '<li>'+ book.word + '<br/>' +
-              '</li>';
-      }).join('');
-      + '</ul>';
-
-    app.innerHTML = booksHTMLString;
-  }
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
-</script>
+        <script>
+          function hide() {
+            var x = document.getElementById("myDIV");
+            if (x.style.display === "none") {
+              x.style.display = "block";
+            } else {
+              x.style.display = "none";
+            }
+          }  
+          function myFunction() {
+              var element = document.body;
+              element.classList.toggle("dark-mode");
+          }
+  
+          var books;
+  
+          var xmlhttp = new XMLHttpRequest();
+          var url = "https://raw.githubusercontent.com/Jeevasimba/files/main/egdata/data.json";
+  
+  
+          xmlhttp.onreadystatechange = function() {
+                        if (this.readyState == 4 && this.status == 200) {
+                                var myArr = JSON.parse(this.responseText);
+                                books = myArr;
+                                render(books);
+                            }
+          };
+  
+          xmlhttp.open("GET", url, true);
+          xmlhttp.send();
+  
+  
+          var render = function(data) {
+            var app = document.getElementById('app');
+            var appa = document.getElementById('myDIV');
+
+            var word = '<ul>'+
+              data.map(function(book){
+                return '<li>'+ book.word + '<br/>' + '<hr style="height:2px;border-width:0;color:gray;background-color:blue">'+
+                      '</li>';
+              }).join('');
+              + '</ul>';
+            
+              var a = '<ul>'+
+              data.map(function(book){
+                return '<li>'+ book.a + '<br/>' + '<hr style="height:2px;border-width:0;color:gray;background-color:blue">'+
+                      '</li>';
+              }).join('');
+              + '</ul>';
+            
+            
+            app.innerHTML = word;
+            appa.innerHTML = a;
+          }
+  
+  
+      </script>
+    </head>
+
+  <body>
+        
+      <button class="button" style="vertical-align:middle" onclick="hide()">Hide</button>
+
+      <div class="container" style="margin-top: 50px;">
+        <table id="app"><tr><td>Table 1</td></tr></table>
+        <table id="myDIV"><tr><td>Table 2</td></tr></table>
+      </div>
+
+  </body>
+
 </html>

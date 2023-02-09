@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>simple game</title>
+    <style>
+        body{
+            background: linear-gradient(45deg, rgb(255, 6, 6) 0%, rgb(96, 10, 255) 100%);
+        }
+        h1 {
+            text-align: center;
+            color: white;
+            padding-top: 30px;
+            text-shadow: 3px 2px yellow;
+        }
+
+        .box1 {
+            float: left;
+
+            height: 100px;
+            margin-left: 15%;
+            padding-right: 35px;
+            padding-top: 25px;
+            border: 1px solid black;
+            border-color: #ffffff;
+        }
+
+        .im {
+            float: left;
+            padding-left: 40px;
+        }
+
+
+
+        .score {
+            float: left;
+            width: 50%;
+
+        }
+
+        p {
+            background-color: white;
+        }
+
+        .click {
+            margin-top: 15%;
+            margin-left: 50%;
+        }
+
+        .sysh1 {
+            padding-right: 10%;
+        }
+
+        .userh1 {
+            padding-right: 10%;
+        }
+
+        .pad1 {
+            margin-left: 12%;
+            position: absolute;
+            margin-top: 10%;
+        }
+        .pad2 {
+            margin-left: 12%;
+            position: absolute;
+            margin-top: 11.5%;
+        }
+
+        .vibrate-1 {
+            margin-left: 47%;
+            margin-top: 10%;
+            font-size: 30px;
+
+            border-color: yellow;
+            color: yellow;            
+            background-color: black;
+            border-radius: 20px;
+            -webkit-animation: vibrate-1 0.3s linear infinite both;
+            animation: vibrate-1 0.3s linear infinite both;
+        }
+
+        .vibrate-1:hover
+        {
+            box-shadow: 2px 5px 5px red;
+        }
+
+        @-webkit-keyframes vibrate-1 {
+            0% {
+                -webkit-transform: translate(0);
+                transform: translate(0);
+            }
+
+            20% {
+                -webkit-transform: translate(-2px, 2px);
+                transform: translate(-2px, 2px);
+            }
+
+            40% {
+                -webkit-transform: translate(-2px, -2px);
+                transform: translate(-2px, -2px);
+            }
+
+            60% {
+                -webkit-transform: translate(2px, 2px);
+                transform: translate(2px, 2px);
+            }
+
+            80% {
+                -webkit-transform: translate(2px, -2px);
+                transform: translate(2px, -2px);
+            }
+
+            100% {
+                -webkit-transform: translate(0);
+                transform: translate(0);
+            }
+        }
+
+        @keyframes vibrate-1 {
+            0% {
+                -webkit-transform: translate(0);
+                transform: translate(0);
+            }
+
+            20% {
+                -webkit-transform: translate(-2px, 2px);
+                transform: translate(-2px, 2px);
+            }
+
+            40% {
+                -webkit-transform: translate(-2px, -2px);
+                transform: translate(-2px, -2px);
+            }
+
+            60% {
+                -webkit-transform: translate(2px, 2px);
+                transform: translate(2px, 2px);
+            }
+
+            80% {
+                -webkit-transform: translate(2px, -2px);
+                transform: translate(2px, -2px);
+            }
+
+            100% {
+                -webkit-transform: translate(0);
+                transform: translate(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>HIGH LEVEL GAME</h1>
+    <div class="boxover">
+        <div class="box1">
+            <div class="im"> <img src="stone.jpg" height="70px" width="70px" onclick="fun()"></div>
+            <div class="im"> <img src="paper.jpg" height="70px" width="70px" onclick="fun1()"></div>
+            <div class="im"> <img src="scissor.jpg" height="70px" width="70px" onclick="fun2()"></div>
+            <div class="pad1">
+                <img class="img1" id="imgh" src="stone.jpg" height="90px" width="90px">
+            </div>
+        </div>
+        <div class="box1">
+            <div class="im"> <img src="stone.jpg" height="70px" width="70px"></div>
+            <div class="im"> <img src="paper.jpg" height="70px" width="70px"></div>
+            <div class="im"> <img src="scissor.jpg" height="70px" width="70px"></div>
+            <div class="pad2"><img class="img1" id="imgh1" src="" height="90px" width="90px"></div>
+        </div>
+
+    </div>
+    <button class="vibrate-1" id="click1" onclick="click2()">CLICK</button>
+    <div>
+        <div class="score">
+            <h1 class="userh1">Your Score</h1>
+            <p style="margin-left: 40%; margin-right: 55%; font-size: 30px; padding-left: 8px;" id="demo">0</p>
+        </div>
+        <div class="score">
+            <h1 class="sysh1">System Score</h1>
+            <p style="margin-left: 43%; margin-right: 52%; font-size: 30px; padding-left: 8px;" id="demo1">0</p>
+        </div>
+    </div>
+
+
+    <script>
+        var user1 = 0
+        var system1 = 0
+        function fun() {
+            document.getElementById('imgh').src = 'stone.jpg';
+
+        }
+        function fun1() {
+            document.getElementById('imgh').src = 'paper.jpg';
+        }
+        function fun2() {
+            document.getElementById('imgh').src = 'scissor.jpg';
+        }
+        function click2() {
+            var temp = 0;
+
+            var image = new Array(3);
+            image[0] = 'stone.jpg';
+            image[1] = 'paper.jpg';
+            image[2] = 'scissor.jpg';
+            temp = Math.floor(Math.random() * 3);
+            document.getElementById("imgh1").src = image[temp];
+            systemval = image[temp];
+            userval = document.getElementById("imgh").src;
+            c = systemval.match('paper')
+            d = systemval.match('scissor')
+            e = systemval.match('stone')
+
+            f = userval.match('paper')
+            g = userval.match('scissor')
+            h = userval.match('stone')
+
+            if (c == 'paper' && h == 'stone') {
+                system1 = system1 + 1
+                document.getElementById("demo1").innerHTML = system1
+                console.log("system win")
+            }
+            else if (h == 'stone' && e == 'stone') {
+                system1 = system1 + 0
+                console.log("draw")
+            }
+            else if (h == 'stone' && e == 'paper') {
+                system1 = system1 + 1
+                document.getElementById("demo1").innerHTML = system1
+                console.log("system win")
+
+            }
+            else if (h == 'stone' && d == 'scissor') {
+                user1 = user1 + 1
+                document.getElementById("demo").innerHTML = user1
+                console.log("user win")
+            }
+            else if (f == 'paper' && c == 'paper') {
+
+                console.log("draw")
+            }
+            else if (f == 'paper' && d == 'scissor') {
+                system1 = system1 + 1
+                document.getElementById("demo1").innerHTML = system1
+                console.log("system win")
+            }
+            else if (f == 'paper' && e == 'stone') {
+                user1 = user1 + 1
+                document.getElementById("demo").innerHTML = user1
+                console.log("user win")
+            }
+            else if (g == 'scissor' && d == 'scissor') {
+                user1 = user1 + 0
+                console.log("draw")
+            }
+            else if (g == 'scissor' && c == 'paper') {
+                user1 = user1 + 1
+                document.getElementById("demo").innerHTML = user1
+                console.log("user win")
+            }
+            else if (g == 'scissor' && e == 'stone') {
+                system1 = system1 + 1
+                document.getElementById("demo1").innerHTML = system1
+                console.log("system win")
+            }
+            if (system1 >= 10) {
+                alert("👎 You Loss 👎")
+            }
+            if (user1 >= 10) {
+                alert("👍 user win 👍")
+            }
+
+        }
+        
+
+
+
+    </script>
+
+</body>
+
+</html>

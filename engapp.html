@@ -67,15 +67,20 @@
     
       let WhichImg;
   
-    if(count<=50){
-       WhichImg = "https://raw.githubusercontent.com/Jeevasimba/files/main/egapp/("+count+").jpg";
-       document.getElementById("myText").value = count;
-    }else {  
+      if(count<=50){
+        WhichImg = "https://raw.githubusercontent.com/Jeevasimba/files/main/egapp/("+count+").jpg";
+        document.getElementById("myText").value = count;
+     }else if(count>50 && count <=121) {  
+    
+        WhichImg = "https://raw.githubusercontent.com/Jeevasimba/files/main/egapp/%20("+count+").jpg";
+        document.getElementById("myText").value = count;
    
-       WhichImg = "https://raw.githubusercontent.com/Jeevasimba/files/main/egapp/%20("+count+").jpg";
-       document.getElementById("myText").value = count;
-  
-    }
+     }else if(count>121) {  
+    
+         WhichImg = "https://raw.githubusercontent.com/Jeevasimba/files/main/egapp/("+count+").png";
+         document.getElementById("myText").value = count;
+    
+      }
   
   
   
@@ -91,9 +96,16 @@
       if(count<=50){
         WhichImg = "https://raw.githubusercontent.com/Jeevasimba/files/main/egapp/("+count+").jpg";
         document.getElementById("myText").value = count;
-      }else {  
+     }else if(count>50 && count <=121) {  
+    
         WhichImg = "https://raw.githubusercontent.com/Jeevasimba/files/main/egapp/%20("+count+").jpg";
         document.getElementById("myText").value = count;
+   
+     }else if(count>121) {  
+    
+         WhichImg = "https://raw.githubusercontent.com/Jeevasimba/files/main/egapp/("+count+").png";
+         document.getElementById("myText").value = count;
+    
       }
     
       document.getElementById('soundtrack').innerHTML=`<img src='${WhichImg}' alt="image" width=auto height=auto>`;

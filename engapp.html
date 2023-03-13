@@ -141,13 +141,13 @@
     var enableButtons = true;
     if (enableButtons) document.getElementById('buttons').style.visibility = 'visible';
     var buttonsHideFunction = function () { document.getElementById('buttons').style.visibility = 'hidden'; }
-    var hideTimeout = setTimeout(buttonsHideFunction, 1500);
+    var hideTimeout = setTimeout(buttonsHideFunction, 10000);
 
     function onMouseMove() {
       if (!enableButtons) return
       document.getElementById('buttons').style.visibility = 'visible';
       clearTimeout(hideTimeout)
-      hideTimeout = setTimeout(buttonsHideFunction, 1000);
+      hideTimeout = setTimeout(buttonsHideFunction, 10000);
     }
 
     function isFullscreen() {

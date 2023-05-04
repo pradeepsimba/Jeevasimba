@@ -95,21 +95,23 @@
           xmlhttp.send();
   
   
+  
           var render = function(data) {
             var app = document.getElementById('app');
             var appa = document.getElementById('myDIV');
-
+            var wordct = 0;
+            var act = 0;
             var word = '<ul>'+
               data.map(function(book){
-                return '<li style="font-size:17px">'+ book.word + '<br/>' + '<hr style="height:2px;border-width:0;color:gray;background-color:blue">'+
-                      '</li>';
+                wordct++;
+                return ''+ wordct + " . " +book.word + '<br/>' + '<hr style="height:2px;border-width:0;color:gray;background-color:blue">';
               }).join('');
               + '</ul>';
             
               var a = '<ul>'+
               data.map(function(book){
-                return '<li>'+ book.a + '<br/>' + '<hr style="height:2px;border-width:0;color:gray;background-color:blue">'+
-                      '</li>';
+                act++;
+                return ''+ act + " . "+ book.a + '<br/>' + '<hr style="height:2px;border-width:0;color:gray;background-color:blue">';
               }).join('');
               + '</ul>';
             
@@ -141,3 +143,4 @@
   </body>
 
 </html>
+

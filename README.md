@@ -1,25 +1,29 @@
-Data : https://github.com/Jeevasimba/files
+# Data : 
 
+  <a href="https://github.com/Jeevasimba/files" target="_blank">
+    <img src="https://img.shields.io/badge/View%20Project-0A66C2?style=for-the-badge&logo=GitHub&logoColor=white" alt="Data" />
+  </a>
+  
 <h1 align="center">Hi 👋, I'm Pradeep Simba</h1>
-<h3 align="center">A Passionate Full Stack Developer from India</h3>
+<h3 align="center">A Non-Passionate Full Stack Developer from India</h3>
 
 <p align="center">
-  <img src="https://komarev.com/ghpvc/?username=elanchezhian2712&label=Profile%20views&color=0e75b6&style=flat" alt="elanchezhian2712" />
+  <img src="https://komarev.com/ghpvc/?username=pradeepsimba&label=Profile%20views&color=0e75b6&style=flat" alt="pradeepsimba" />
 </p>
 
 <p align="center">
-  <a href="https://linkedin.com/in/elanchezhian-dev" target="blank">
+<!--   <a href="https://linkedin.com/in/pradeepsimba" target="blank">
     <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
-  </a>
-  <a href="https://github.com/elanchezhian2712" target="blank">
+  </a> -->
+  <a href="https://github.com/pradeepsimba" target="blank">
     <img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
   </a>
-  <a href="https://elan-portfolio-cyan.vercel.app/" target="blank">
+<!--   <a href="https://elan-portfolio-cyan.vercel.app/" target="blank">
     <img src="https://img.shields.io/badge/Portfolio-0A66C2?style=for-the-badge&logo=About.me&logoColor=white" alt="Portfolio" />
   </a>
   <a href="https://elan-cv.tiiny.site/" target="blank">
     <img src="https://img.shields.io/badge/Resume-0A66C2?style=for-the-badge&logo=GoogleDrive&logoColor=white" alt="Resume" />
-  </a>
+  </a> -->
 </p>
 
 <h2 align="center">👨‍💻 About Me</h2>
@@ -29,7 +33,7 @@ Data : https://github.com/Jeevasimba/files
 
 - 🌱 I’m currently learning **Remix.js**
 
-- 💬 Ask me about **Web Development**
+- 💬 Don't Ask me about **Web Development**
 
 
 
@@ -52,16 +56,6 @@ Data : https://github.com/Jeevasimba/files
 
 <h2 align="center">📊 GitHub Stats</h2>
 <p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=elanchezhian2712&show_icons=true&theme=radical" alt="pradeepsimba" />
-  <img src="https://github-readme-stats.vercel.app/api/top-langs?username=elanchezhian2712&show_icons=true&locale=en&layout=compact&theme=radical" alt="pradeepsimba" />
-</p>
-
-<h2 align="center">💻 Projects</h2>
-
-
-  
-  <br>
-  <a href="https://github.com/elanchezhian2712/virtual-assistance" target="_blank">
-    <img src="https://img.shields.io/badge/View%20Project-0A66C2?style=for-the-badge&logo=GitHub&logoColor=white" alt="View Project" />
-  </a>
+  <img src="https://github-readme-stats.vercel.app/api?username=pradeepsimba&show_icons=true&theme=radical" alt="pradeepsimba" />
+  <img src="https://github-readme-stats.vercel.app/api/top-langs?username=pradeepsimba&show_icons=true&locale=en&layout=compact&theme=radical" alt="pradeepsimba" />
 </p>

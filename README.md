@@ -31,7 +31,7 @@
     🌱
 </p>
 
-- 🌱 I’m currently learning **Remix.js**
+- 🌱 I’m currently learning **Trading**
 
 - 💬 Don't Ask me about **Web Development**
 

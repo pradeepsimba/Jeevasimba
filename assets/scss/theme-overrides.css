@@ -1,0 +1,680 @@
+/* ============================================================================
+   theme-overrides.css
+   A light, modern skin layered on top of the Now UI Dashboard template.
+   Loaded LAST in angular.json so it overrides the template's dark defaults.
+   Design tokens: indigo #6366f1 primary, slate surfaces, Inter typeface,
+   soft shadows, rounded cards.
+   Kept as a single global override file rather than editing the vendored
+   now-ui-dashboard SCSS, so the template stays upgradeable. The settings
+   panel (settings-panel.component.ts) overrides several of these --variables
+   live via inline styles on <html> - see applyTheme() there.
+   ========================================================================== */
+
+:root {
+  --primary: #6366f1;
+  --primary-hover: #4f46e5;
+  --primary-light: rgba(99, 102, 241, 0.08);
+  --primary-glow: rgba(99, 102, 241, 0.25);
+
+  --surface: #ffffff;
+  --surface-hover: #f8fafc;
+  --surface-secondary: #f1f5f9;
+
+  --border: #e2e8f0;
+  --border-light: #f1f5f9;
+
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
+
+  --danger: #ef4444;
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --info: #06b6d4;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.06), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 12px 32px -4px rgba(0, 0, 0, 0.08), 0 4px 8px -4px rgba(0, 0, 0, 0.04);
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+
+  --mp-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --mp-sidebar-w: 260px;
+}
+
+/* ── Base / typography ──────────────────────────────────────────────────── */
+html, body {
+  font-family: var(--mp-font) !important;
+  background: var(--surface-secondary) !important;
+  color: var(--text-primary);
+}
+body, .wrapper, .main-panel {
+  background: var(--surface-secondary) !important;
+}
+h1, h2, h3, h4, h5, h6,
+.card-title, .navbar, .sidebar, .nav, .btn, .form-control, p, a, span, td, th {
+  font-family: var(--mp-font) !important;
+}
+
+/* ── Sidebar (was a dark/red gradient panel) → clean white rail ─────────── */
+.sidebar,
+.off-canvas-sidebar {
+  background: var(--surface) !important;
+  box-shadow: none;
+  border-right: 1px solid var(--border);
+  width: var(--mp-sidebar-w);
+}
+/* Now UI paints the sidebar colour through :before / :after overlays — kill them. */
+.sidebar:before,
+.sidebar:after,
+.off-canvas-sidebar:before,
+.off-canvas-sidebar:after {
+  background: transparent !important;
+  background-image: none !important;
+  opacity: 0 !important;
+}
+
+/* Logo block */
+.sidebar .logo,
+.off-canvas-sidebar .logo {
+  border-bottom: 1px solid var(--border) !important;
+  padding: 14px 18px;
+}
+.sidebar .logo .simple-text,
+.off-canvas-sidebar .logo .simple-text {
+  color: var(--text-primary) !important;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+/* The template logo image is a white PNG — invisible on white. Sit it on an
+   indigo rounded tile so it reads on the light rail. */
+.sidebar .logo .logo-img,
+.off-canvas-sidebar .logo .logo-img {
+  background: var(--primary);
+  border-radius: 10px;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+}
+.sidebar .logo .logo-img img,
+.off-canvas-sidebar .logo .logo-img img {
+  width: 100%;
+  height: auto;
+}
+
+/* Nav items */
+.sidebar .nav li > a,
+.off-canvas-sidebar .nav li > a {
+  color: var(--text-secondary) !important;
+  border-radius: var(--radius-sm);
+  margin: 0 4px;
+  padding: 8px 12px;
+  font-weight: 500;
+  opacity: 1;
+  transition: background 0.16s ease, color 0.16s ease;
+}
+.sidebar .nav li > a i,
+.off-canvas-sidebar .nav li > a i {
+  color: inherit !important;
+  opacity: 0.9;
+}
+.sidebar .nav li > a:hover,
+.off-canvas-sidebar .nav li > a:hover {
+  background: var(--surface-secondary) !important;
+  color: var(--text-primary) !important;
+}
+/* Active item -> quiet tinted background (NOT a solid filled pill) - matches
+   the "quiet chrome" composition: active is the loudest thing in the sidebar
+   via color alone, so nothing else needs to compete with a heavy fill/shadow. */
+.sidebar .nav li.active > a,
+.off-canvas-sidebar .nav li.active > a {
+  background: var(--primary-light) !important;
+  color: var(--primary) !important;
+  font-weight: 600;
+  box-shadow: none;
+}
+.sidebar .nav li.active > a i,
+.off-canvas-sidebar .nav li.active > a i {
+  color: var(--primary) !important;
+  opacity: 1;
+}
+/* Now UI draws the active state via an :before bar on the <a> — hide it. */
+.sidebar .nav li.active > a:before,
+.sidebar .nav li > a:before,
+.sidebar .nav li > a:after {
+  display: none !important;
+}
+/* "Explore files" pro item shouldn't keep the template's coloured highlight. */
+.sidebar .nav li.active-pro > a {
+  background: var(--surface-hover) !important;
+  color: var(--text-primary) !important;
+  box-shadow: none;
+}
+
+/* ── Top navbar → white, subtle border, dark content ─────────────────────
+   Matches the navbar's real "quiet chrome" treatment: hairline border only,
+   no shadow, no gradient accent line, 64px tall. */
+.navbar.navbar-absolute,
+.navbar.bg-primary,
+.main-panel > .navbar {
+  background: var(--surface) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  border-bottom: 1px solid var(--border);
+  min-height: 64px;
+}
+.navbar .navbar-brand {
+  color: var(--text-primary) !important;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+/* Icon links (whatsapp / websites / search) get the same boxed treatment as
+   a real icon-button: a defined hit target with a background on hover,
+   not just a color change. */
+.navbar .navbar-nav .nav-link {
+  color: var(--text-secondary) !important;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  transition: background 0.16s ease, color 0.16s ease;
+}
+.navbar .navbar-nav .nav-link:hover {
+  background: var(--surface-secondary) !important;
+  color: var(--text-primary) !important;
+}
+.navbar .navbar-nav .nav-link i {
+  color: inherit !important;
+  opacity: 0.85;
+}
+.navbar .navbar-nav .nav-link:hover i {
+  opacity: 1;
+}
+/* Hamburger / kebab bars were white → make them dark so they show on white. */
+.navbar .navbar-toggler-bar {
+  background: var(--text-secondary) !important;
+}
+/* Theme-toggle button (component CSS forces white) */
+.theme-toggle button {
+  color: var(--text-secondary) !important;
+}
+.theme-toggle button.dark { color: var(--warning) !important; }
+.theme-toggle button.light { color: var(--primary) !important; }
+
+/* ── Cards ──────────────────────────────────────────────────────────────── */
+/* Border/shadow live in the body.card-shadow / body.card-bordered blocks below
+   (ThemeSettingsService always applies exactly one of the two) - the base
+   rule only carries what both variants share. */
+.card {
+  background: var(--surface);
+  border-radius: var(--radius-lg) !important;
+  color: var(--text-primary);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+body.card-shadow .card {
+  border: 1px solid transparent !important;
+  box-shadow: var(--shadow-md) !important;
+}
+body.card-shadow .card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg) !important;
+}
+.card .card-title,
+.card h1, .card h2, .card h3, .card h4 {
+  color: var(--text-primary);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.card p, .card .card-category {
+  color: var(--text-secondary);
+}
+
+/* ── Buttons ────────────────────────────────────────────────────────────── */
+.btn {
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.05s ease;
+}
+.btn:active { transform: translateY(1px); }
+
+.btn-primary,
+.btn-primary:focus {
+  background: var(--primary) !important;
+  border-color: var(--primary) !important;
+  color: #fff !important;
+  box-shadow: 0 6px 16px -6px var(--primary-glow);
+}
+.btn-primary:hover,
+.btn-primary:active {
+  background: var(--primary-hover) !important;
+  border-color: var(--primary-hover) !important;
+}
+
+.btn-outline-danger {
+  color: var(--danger) !important;
+  border-color: var(--danger) !important;
+  background: transparent !important;
+}
+.btn-outline-danger:hover {
+  background: var(--danger) !important;
+  color: #fff !important;
+}
+
+/* ── Form controls ──────────────────────────────────────────────────────── */
+.form-control {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.form-control:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-light);
+  background: var(--surface);
+  color: var(--text-primary);
+}
+.form-control::placeholder { color: var(--text-muted); }
+
+/* ── Dropdown menus (navbar "my websites", etc.) ────────────────────────── */
+.dropdown-menu {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 6px;
+}
+.dropdown-menu .dropdown-item {
+  color: var(--text-secondary);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  font-weight: 500;
+}
+.dropdown-menu .dropdown-item:hover {
+  background: var(--primary-light);
+  color: var(--primary);
+}
+
+/* ── Panel header (dashboard hero strip) → flatten the template gradient ── */
+.panel-header {
+  background: transparent !important;
+  background-image: none !important;
+}
+
+/* ── Links ──────────────────────────────────────────────────────────────── */
+a { color: var(--primary); }
+a:hover { color: var(--primary-hover); }
+
+/* ============================================================================
+   Settings-panel-driven variants (see theme-settings.ts / settings-panel).
+   ThemeSettingsService toggles these body classes and re-sets --primary* via
+   JS; everything below is pure CSS reacting to those classes/vars.
+   ========================================================================== */
+
+/* ── Dark mode ─────────────────────────────────────────────────────────── */
+body.dark-mode {
+  --surface: #1e293b;
+  --surface-hover: #2b3a52;
+  --surface-secondary: #0f172a;
+  --border: #334155;
+  --border-light: #2b3a52;
+  --text-primary: #f1f5f9;
+  --text-secondary: #a0aec0;
+  --text-muted: #718096;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.35), 0 2px 4px -2px rgba(0, 0, 0, 0.25);
+  --shadow-lg: 0 12px 32px -4px rgba(0, 0, 0, 0.45), 0 4px 8px -4px rgba(0, 0, 0, 0.3);
+}
+/* Bootstrap/ng-bootstrap components (dropdowns, modals) read data-bs-theme - ThemeSettingsService
+   sets this on <html> alongside the body class. */
+body.dark-mode .table { color: var(--text-primary); }
+
+/* ── Sidebar: mini (icon rail, no text labels) ───────────────────────────── */
+body.sidebar-mini .sidebar,
+body.sidebar-mini .off-canvas-sidebar {
+  width: 80px;
+}
+body.sidebar-mini .sidebar .logo .simple-text.logo-normal,
+body.sidebar-mini .sidebar .nav li > a p {
+  display: none;
+}
+body.sidebar-mini .sidebar .nav li > a {
+  display: flex;
+  justify-content: center;
+  margin: 4px 10px;
+  padding: 10px;
+}
+body.sidebar-mini .main-panel {
+  /* Now UI's own .main-panel width is normally driven by the template's own sidebar-width SCSS
+     variable, not overridable from here without touching the vendored partials - min-width keeps
+     content from being cramped against the narrower rail at typical desktop widths instead. */
+  margin-left: 80px;
+}
+
+/* ── Card style: border (flat, no shadow, visible outline instead) ──────── */
+body.card-bordered .card {
+  box-shadow: none !important;
+  border: 1px solid var(--border) !important;
+}
+body.card-bordered .card:hover {
+  border-color: var(--text-muted) !important;
+  box-shadow: var(--shadow-sm) !important;
+  transform: translateY(-1px);
+}
+
+/* ── UI style: glass (translucent sidebar/navbar/cards over a soft gradient) */
+body.ui-glass {
+  background: linear-gradient(135deg, #eef2ff 0%, #f1f5f9 45%, #e0e7ff 100%);
+}
+body.ui-glass.dark-mode {
+  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+}
+body.ui-glass .sidebar,
+body.ui-glass .off-canvas-sidebar,
+body.ui-glass .navbar.navbar-absolute,
+body.ui-glass .navbar.bg-primary,
+body.ui-glass .main-panel > .navbar,
+body.ui-glass .card,
+body.ui-glass .dropdown-menu {
+  background: color-mix(in srgb, var(--surface) 55%, transparent) !important;
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border-color: color-mix(in srgb, var(--border) 60%, transparent);
+}
+
+/* ── Container: boxed (capped width, centered, like a windowed desktop app) */
+body.container-boxed .main-panel > *:not(.navbar) {
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ── Direction: rtl ───────────────────────────────────────────────────────
+   Full bidi support would need touching every vendored spacing rule; this
+   covers the structural pieces (sidebar side, text alignment, nav icon
+   spacing) that read as "wrong side" at a glance without it. */
+html[dir="rtl"] body:not(.sidebar-mini) .main-panel {
+  margin-left: 0;
+}
+html[dir="rtl"] .sidebar,
+html[dir="rtl"] .off-canvas-sidebar {
+  right: 0;
+  left: auto;
+}
+html[dir="rtl"] .main-panel {
+  margin-right: 260px;
+  margin-left: 0;
+}
+html[dir="rtl"] body.sidebar-mini .main-panel {
+  margin-right: 80px;
+  margin-left: 0;
+}
+html[dir="rtl"] .sidebar .nav li > a i {
+  margin-right: 0;
+  margin-left: 10px;
+}
+html[dir="rtl"] .settings-drawer {
+  right: auto;
+  left: -380px;
+  border-left: none;
+  border-right: 1px solid var(--border);
+}
+html[dir="rtl"] .settings-drawer.open {
+  left: 0;
+}
+html[dir="rtl"] .settings-fab {
+  right: auto;
+  left: 26px;
+}
+
+/* ============================================================================
+   Reusable "modern page" building blocks. One shared system (defined globally
+   here, not per-component) so every real page - stock selection, my stocks,
+   explore files, video player - gets the same consistent, modern look without
+   duplicating the same card/list/button CSS in four separate component files.
+   ========================================================================== */
+
+.page-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+.page-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 24px 28px 20px;
+  border-bottom: 1px solid var(--border-light);
+}
+.page-card-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 4px;
+  letter-spacing: -0.01em;
+}
+.page-card-sub {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+.page-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.page-card-body {
+  padding: 24px 28px 28px;
+}
+
+/* Buttons */
+.btn-modern {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: inherit;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  white-space: nowrap;
+}
+.btn-modern:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-modern.btn-sm { padding: 7px 14px; font-size: 0.8rem; }
+
+/* Flat, not gradient - matches the real .btn-primary treatment (gradients in
+   this system are reserved for the settings FAB and active nav pills). */
+.btn-modern-primary {
+  background: var(--primary);
+  color: #fff;
+}
+.btn-modern-primary:hover:not(:disabled) { background: var(--primary-hover); }
+
+.btn-modern-outline {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1.5px solid var(--border);
+}
+.btn-modern-outline:hover:not(:disabled) { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+
+/* File-picker styled as a button (wraps a visually-hidden <input type="file">) */
+.btn-icon-file {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1.5px solid var(--border);
+  color: var(--text-secondary);
+  background: var(--surface-secondary);
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+  white-space: nowrap;
+}
+.btn-icon-file:hover { border-color: var(--primary); color: var(--primary); }
+
+.btn-icon-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.btn-icon-danger:hover { background: var(--danger-light, rgba(239, 68, 68, 0.1)); color: var(--danger); }
+
+/* Search bar */
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  margin-bottom: 20px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-secondary);
+  transition: border-color 0.15s ease;
+}
+.search-bar:focus-within { border-color: var(--primary); background: var(--surface); }
+.search-bar > .bi { color: var(--text-muted); font-size: 0.95rem; }
+.search-bar input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 0.9rem;
+  font-family: inherit;
+  color: var(--text-primary);
+  min-width: 0;
+}
+.search-bar input::placeholder { color: var(--text-muted); }
+
+/* List rows (stocks, files, ...) */
+.modern-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.modern-list-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  background: var(--surface-secondary);
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.modern-list-item:hover { background: var(--surface-hover); border-color: var(--border); }
+.modern-list-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-md);
+  background: var(--primary-light);
+  color: var(--primary);
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+.modern-list-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.modern-list-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.modern-list-badges {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.badge-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+/* Empty state */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 48px 20px;
+  color: var(--text-muted);
+  text-align: center;
+}
+.empty-state .bi { font-size: 2.2rem; opacity: 0.5; }
+.empty-state p { margin: 0; font-size: 0.88rem; }
+
+/* Video player page */
+.video-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.video-url-input {
+  flex: 1;
+  min-width: 200px;
+  padding: 10px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-secondary);
+  color: var(--text-primary);
+  font-size: 0.88rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+.video-url-input:focus { border-color: var(--primary); background: var(--surface); }
+.video-url-input::placeholder { color: var(--text-muted); }
+.videolib vg-player {
+  display: block;
+  margin-top: 4px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+.videolib video { width: 100%; height: auto; display: block; }

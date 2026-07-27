@@ -35,13 +35,52 @@
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
   --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.06), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
   --shadow-lg: 0 12px 32px -4px rgba(0, 0, 0, 0.08), 0 4px 8px -4px rgba(0, 0, 0, 0.04);
+  --shadow-xl: 0 24px 48px -8px rgba(0, 0, 0, 0.1), 0 8px 16px -4px rgba(0, 0, 0, 0.06);
 
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  --font-xs: 0.75rem;
+  --font-sm: 0.875rem;
+  --font-base: 1rem;
+  --font-lg: 1.125rem;
+  --font-xl: 1.25rem;
+  --font-2xl: 1.5rem;
+  --font-3xl: 1.75rem;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
 
   --mp-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --mp-sidebar-w: 260px;
+}
+
+/* ── Toastr notifications ───────────────────────────────────────────────────
+   The vendored Now UI template ships CSS for a DIFFERENT, older notification
+   plugin (bootstrap-notify) that happens to reuse the exact class name ngx-
+   toastr uses for its own root element: .toast-container. That vendored rule
+   sets .toast-container { width: 100% }, and it loads AFTER ngx-toastr's own
+   toastr.css in angular.json's styles array - same specificity, later source
+   order, so it wins and overrides toastr's real (auto/content-sized) width.
+   A position:fixed box with right:12px, no explicit left, and width:100%
+   computes a NEGATIVE left offset, so the container - and the toast inside
+   it, which just flows from the container's own left edge since none of the
+   vendored rule's OTHER selectors (.toast-top-right .alert etc) match ngx-
+   toastr's real DOM - renders pinned to the top-LEFT corner instead of
+   top-right, overlapping the navbar brand/title and sidebar instead of
+   sitting in a clear corner. */
+.toast-container {
+  width: auto !important;
 }
 
 /* ── Base / typography ──────────────────────────────────────────────────── */
@@ -369,25 +408,319 @@ body.card-bordered .card:hover {
   transform: translateY(-1px);
 }
 
-/* ── UI style: glass (translucent sidebar/navbar/cards over a soft gradient) */
+/* ── UI style: glass (translucent sidebar/navbar/cards over a soft gradient) ─
+   Token set + component coverage mirrors the reference app's glassmorphism
+   system, scoped to the component vocabulary this app actually uses
+   (page-card/btn-modern/search-bar/modern-list, not the reference's unrelated
+   data-table/stepper/tabs/etc). Previously this was a 3-rule "blur a few
+   surfaces" skin; real controls (buttons, inputs, list rows, badges) stayed
+   fully opaque, breaking the "everything is glass" illusion mid-page. */
 body.ui-glass {
+  --glass-bg:          rgba(255, 255, 255, 0.55);
+  --glass-bg-strong:   rgba(255, 255, 255, 0.70);
+  --glass-border:      rgba(255, 255, 255, 0.55);
+  --glass-border-soft: rgba(255, 255, 255, 0.30);
+  --glass-blur:        blur(20px) saturate(140%);
+  --glass-blur-sm:     blur(12px) saturate(130%);
+  --glass-shine:       inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  --glass-shadow:      0 8px 24px rgba(15, 23, 42, 0.06), 0 2px 6px rgba(15, 23, 42, 0.04);
+  --glass-shadow-lg:   0 24px 56px rgba(15, 23, 42, 0.12), 0 8px 20px rgba(15, 23, 42, 0.06);
+  --glass-glow:        0 0 0 1px rgba(99, 102, 241, 0.18);
   background: linear-gradient(135deg, #eef2ff 0%, #f1f5f9 45%, #e0e7ff 100%);
 }
 body.ui-glass.dark-mode {
+  --glass-bg:          rgba(17, 24, 39, 0.55);
+  --glass-bg-strong:   rgba(17, 24, 39, 0.70);
+  --glass-border:      rgba(255, 255, 255, 0.10);
+  --glass-border-soft: rgba(255, 255, 255, 0.06);
+  --glass-blur:        blur(22px) saturate(150%);
+  --glass-blur-sm:     blur(14px) saturate(140%);
+  --glass-shine:       inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --glass-shadow:      0 8px 24px rgba(0, 0, 0, 0.32), 0 2px 8px rgba(0, 0, 0, 0.18);
+  --glass-shadow-lg:   0 24px 56px rgba(0, 0, 0, 0.42), 0 8px 24px rgba(0, 0, 0, 0.24);
+  --glass-glow:        0 0 0 1px rgba(139, 92, 246, 0.20);
   background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
 }
+
+/* Chrome + surfaces */
 body.ui-glass .sidebar,
 body.ui-glass .off-canvas-sidebar,
 body.ui-glass .navbar.navbar-absolute,
 body.ui-glass .navbar.bg-primary,
-body.ui-glass .main-panel > .navbar,
-body.ui-glass .card,
-body.ui-glass .dropdown-menu {
-  background: color-mix(in srgb, var(--surface) 55%, transparent) !important;
-  backdrop-filter: blur(20px) saturate(140%);
-  -webkit-backdrop-filter: blur(20px) saturate(140%);
-  border-color: color-mix(in srgb, var(--border) 60%, transparent);
+body.ui-glass .main-panel > .navbar {
+  background: var(--glass-bg-strong) !important;
+  backdrop-filter: var(--glass-blur) !important;
+  -webkit-backdrop-filter: var(--glass-blur) !important;
+  border-color: var(--glass-border-soft) !important;
+  box-shadow: var(--glass-shadow) !important;
 }
+body.ui-glass .card,
+body.ui-glass .page-card,
+body.ui-glass .dropdown-menu,
+body.ui-glass .settings-drawer {
+  background: var(--glass-bg) !important;
+  backdrop-filter: var(--glass-blur) !important;
+  -webkit-backdrop-filter: var(--glass-blur) !important;
+  border-color: var(--glass-border) !important;
+  box-shadow: var(--glass-shadow) !important;
+}
+body.ui-glass .page-card:hover {
+  box-shadow: var(--glass-shadow-lg) !important;
+}
+body.ui-glass .page-card-header { border-bottom-color: var(--glass-border-soft) !important; }
+
+/* Buttons */
+body.ui-glass .btn-modern-primary,
+body.ui-glass .btn-primary {
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.38), 0 4px 16px rgba(0, 0, 0, 0.18) !important;
+}
+body.ui-glass .btn-modern-primary:hover:not(:disabled),
+body.ui-glass .btn-primary:hover {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.38), 0 6px 22px rgba(0, 0, 0, 0.22), var(--glass-glow) !important;
+}
+body.ui-glass .btn-modern-outline,
+body.ui-glass .btn-icon-file,
+body.ui-glass .btn-outline-danger {
+  background: rgba(255, 255, 255, 0.18) !important;
+  backdrop-filter: var(--glass-blur-sm) !important;
+  -webkit-backdrop-filter: var(--glass-blur-sm) !important;
+  border-color: var(--glass-border-soft) !important;
+  box-shadow: var(--glass-shine) !important;
+}
+body.ui-glass .btn-modern-outline:hover:not(:disabled),
+body.ui-glass .btn-icon-file:hover {
+  background: rgba(255, 255, 255, 0.32) !important;
+  border-color: var(--glass-border) !important;
+  box-shadow: var(--glass-shine), var(--glass-glow) !important;
+}
+body.ui-glass .btn-icon-danger:hover {
+  background: rgba(239, 68, 68, 0.14) !important;
+  backdrop-filter: var(--glass-blur-sm) !important;
+  -webkit-backdrop-filter: var(--glass-blur-sm) !important;
+}
+body.dark-mode.ui-glass .btn-modern-outline,
+body.dark-mode.ui-glass .btn-icon-file {
+  color: var(--text-primary) !important;
+}
+
+/* Forms / search / inputs */
+body.ui-glass .form-control,
+body.ui-glass .search-bar,
+body.ui-glass .video-url-input {
+  background: rgba(255, 255, 255, 0.32) !important;
+  backdrop-filter: var(--glass-blur-sm) !important;
+  -webkit-backdrop-filter: var(--glass-blur-sm) !important;
+  border-color: var(--glass-border-soft) !important;
+  box-shadow: var(--glass-shine) !important;
+}
+body.ui-glass .form-control:focus,
+body.ui-glass .search-bar:focus-within {
+  background: rgba(255, 255, 255, 0.50) !important;
+  border-color: var(--glass-border) !important;
+  box-shadow: var(--glass-shine), 0 0 0 3px rgba(99, 102, 241, 0.22) !important;
+}
+body.dark-mode.ui-glass .form-control,
+body.dark-mode.ui-glass .search-bar,
+body.dark-mode.ui-glass .video-url-input {
+  background: rgba(17, 24, 39, 0.40) !important;
+}
+
+/* List rows / badges */
+body.ui-glass .modern-list-item {
+  background: rgba(255, 255, 255, 0.20) !important;
+  backdrop-filter: var(--glass-blur-sm) !important;
+  -webkit-backdrop-filter: var(--glass-blur-sm) !important;
+  border-color: var(--glass-border-soft) !important;
+}
+body.ui-glass .modern-list-item:hover {
+  background: rgba(255, 255, 255, 0.32) !important;
+  border-color: var(--glass-border) !important;
+}
+body.dark-mode.ui-glass .modern-list-item {
+  background: rgba(17, 24, 39, 0.30) !important;
+}
+body.dark-mode.ui-glass .modern-list-item:hover {
+  background: rgba(30, 41, 59, 0.45) !important;
+}
+body.ui-glass .badge-chip {
+  background: rgba(255, 255, 255, 0.30) !important;
+  border-color: var(--glass-border-soft) !important;
+}
+
+/* Settings FAB/drawer + scrollbar */
+body.ui-glass .settings-fab {
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.50), 0 4px 24px var(--primary-glow) !important;
+}
+body.ui-glass ::-webkit-scrollbar-thumb {
+  background: rgba(99, 102, 241, 0.45);
+}
+body.ui-glass ::-webkit-scrollbar-thumb:hover {
+  background: rgba(99, 102, 241, 0.72);
+}
+body.dark-mode.ui-glass ::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.55);
+}
+
+/* ── UI style: neumorphism (soft-UI, extruded/inset depth, no borders) ───── */
+body.ui-neumorphism {
+  --neu-bg:     #e2e8f2;
+  --neu-dark:   #aab8cc;
+  --neu-light:  #ffffff;
+  --neu-out:    12px 12px 28px #aab8cc, -12px -12px 28px #ffffff;
+  --neu-out-sm: 6px 6px 14px #aab8cc, -6px -6px 14px #ffffff;
+  --neu-in:     inset 8px 8px 20px #aab8cc, inset -8px -8px 20px #ffffff;
+  --neu-in-sm:  inset 5px 5px 10px #aab8cc, inset -5px -5px 10px #ffffff;
+  --neu-lg:     18px 18px 45px #aab8cc, -18px -18px 45px #ffffff;
+  --surface: #e2e8f2 !important;
+  --surface-secondary: #e2e8f2 !important;
+  --surface-hover: #dce3ef !important;
+  --border: rgba(170, 184, 204, 0.28) !important;
+  --text-primary: #1e293b !important;
+  --text-secondary: #475569 !important;
+  --text-muted: #7a92aa !important;
+}
+body.dark-mode.ui-neumorphism {
+  --neu-bg:     #1e2535;
+  --neu-dark:   #141d2c;
+  --neu-light:  #2a3648;
+  --neu-out:    12px 12px 28px #141d2c, -12px -12px 28px #2a3648;
+  --neu-out-sm: 6px 6px 14px #141d2c, -6px -6px 14px #2a3648;
+  --neu-in:     inset 8px 8px 20px #141d2c, inset -8px -8px 20px #2a3648;
+  --neu-in-sm:  inset 5px 5px 10px #141d2c, inset -5px -5px 10px #2a3648;
+  --neu-lg:     18px 18px 45px #141d2c, -18px -18px 45px #2a3648;
+  --surface: #1e2535 !important;
+  --surface-secondary: #1e2535 !important;
+  --surface-hover: #222d40 !important;
+  --border: rgba(20, 29, 44, 0.60) !important;
+  --text-primary: #c8d5e8 !important;
+  --text-secondary: #8a9bb4 !important;
+  --text-muted: #546476 !important;
+}
+body.ui-neumorphism,
+body.ui-neumorphism .wrapper,
+body.ui-neumorphism .main-panel {
+  background: var(--neu-bg) !important;
+}
+
+/* Cards — raised, with a subtle extruded gradient surface */
+body.ui-neumorphism .card,
+body.ui-neumorphism .page-card,
+body.ui-neumorphism .dropdown-menu,
+body.ui-neumorphism .settings-drawer {
+  background: linear-gradient(145deg, #edf2fa 0%, #d8dee8 100%) !important;
+  border: none !important;
+  box-shadow: var(--neu-out) !important;
+  transition: box-shadow 0.25s ease, transform 0.25s ease !important;
+}
+body.dark-mode.ui-neumorphism .card,
+body.dark-mode.ui-neumorphism .page-card,
+body.dark-mode.ui-neumorphism .dropdown-menu,
+body.dark-mode.ui-neumorphism .settings-drawer {
+  background: linear-gradient(145deg, #252e40 0%, #171e2e 100%) !important;
+}
+body.ui-neumorphism .page-card:hover { box-shadow: var(--neu-lg) !important; }
+body.ui-neumorphism .dropdown-menu { box-shadow: var(--neu-lg) !important; }
+body.ui-neumorphism .page-card-header { border-bottom-color: var(--border) !important; }
+
+/* Chrome */
+body.ui-neumorphism .sidebar,
+body.ui-neumorphism .off-canvas-sidebar {
+  background: var(--surface) !important;
+  border-right: none !important;
+  box-shadow: 5px 0 18px var(--neu-dark), -3px 0 8px var(--neu-light) !important;
+}
+body.ui-neumorphism .navbar.navbar-absolute,
+body.ui-neumorphism .navbar.bg-primary,
+body.ui-neumorphism .main-panel > .navbar {
+  background: var(--surface) !important;
+  border-bottom: none !important;
+  box-shadow: 0 5px 18px var(--neu-dark), 0 -1px 5px var(--neu-light) !important;
+}
+body.ui-neumorphism .sidebar .nav li.active > a,
+body.ui-neumorphism .off-canvas-sidebar .nav li.active > a {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%) !important;
+  box-shadow: inset 3px 3px 8px rgba(0, 0, 0, 0.22), 0 4px 16px var(--primary-glow) !important;
+  color: #fff !important;
+}
+body.ui-neumorphism .sidebar .nav li > a:hover:not(.active) {
+  background: var(--surface) !important;
+  box-shadow: var(--neu-out-sm) !important;
+}
+
+/* Buttons */
+body.ui-neumorphism .btn-modern-primary,
+body.ui-neumorphism .btn-primary {
+  border: none !important;
+  box-shadow: 5px 5px 12px var(--neu-dark), -3px -3px 8px var(--neu-light) !important;
+  transition: box-shadow 0.18s ease, transform 0.18s ease !important;
+}
+body.ui-neumorphism .btn-modern-primary:hover:not(:disabled),
+body.ui-neumorphism .btn-primary:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 7px 7px 16px var(--neu-dark), -4px -4px 10px var(--neu-light) !important;
+}
+body.ui-neumorphism .btn-modern-primary:active,
+body.ui-neumorphism .btn-primary:active {
+  transform: translateY(0) !important;
+  box-shadow: inset 3px 3px 9px rgba(0, 0, 0, 0.25), inset -2px -2px 6px rgba(255, 255, 255, 0.25) !important;
+}
+body.ui-neumorphism .btn-modern-outline,
+body.ui-neumorphism .btn-icon-file,
+body.ui-neumorphism .btn-outline-danger {
+  background: var(--surface) !important;
+  border: none !important;
+  box-shadow: var(--neu-out-sm) !important;
+}
+body.ui-neumorphism .btn-modern-outline:hover:not(:disabled),
+body.ui-neumorphism .btn-icon-file:hover { box-shadow: var(--neu-out) !important; }
+body.ui-neumorphism .btn-modern-outline:active { box-shadow: var(--neu-in-sm) !important; }
+body.ui-neumorphism .btn-icon-danger:hover {
+  background: var(--surface) !important;
+  box-shadow: var(--neu-in-sm) !important;
+}
+
+/* Forms / search / inputs — inset (pressed) */
+body.ui-neumorphism .form-control,
+body.ui-neumorphism .search-bar,
+body.ui-neumorphism .video-url-input {
+  background: var(--surface) !important;
+  border: none !important;
+  box-shadow: var(--neu-in) !important;
+}
+body.ui-neumorphism .form-control:focus,
+body.ui-neumorphism .search-bar:focus-within {
+  box-shadow: var(--neu-in), 0 0 0 3px var(--primary-light) !important;
+}
+
+/* List rows / badges */
+body.ui-neumorphism .modern-list-item {
+  background: var(--surface) !important;
+  border: none !important;
+  box-shadow: var(--neu-out-sm) !important;
+}
+body.ui-neumorphism .modern-list-item:hover { box-shadow: var(--neu-out) !important; }
+body.ui-neumorphism .badge-chip {
+  background: var(--surface) !important;
+  border: none !important;
+  box-shadow: var(--neu-in-sm) !important;
+}
+
+/* Settings FAB + scrollbar */
+body.ui-neumorphism .settings-fab {
+  box-shadow: 5px 5px 14px var(--neu-dark), -3px -3px 10px var(--neu-light) !important;
+  border: none !important;
+}
+body.ui-neumorphism .settings-fab:hover {
+  transform: scale(1.08) rotate(15deg) !important;
+  box-shadow: 8px 8px 20px var(--neu-dark), -4px -4px 12px var(--neu-light) !important;
+}
+body.ui-neumorphism ::-webkit-scrollbar-thumb { background: var(--neu-dark); }
+body.ui-neumorphism ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
 /* ── Container: boxed (capped width, centered, like a windowed desktop app) */
 body.container-boxed .main-panel > *:not(.navbar) {
@@ -633,6 +966,39 @@ html[dir="rtl"] .settings-fab {
   font-weight: 600;
 }
 
+/* ── Loading spinners ────────────────────────────────────────────────────── */
+@keyframes mp-spin { to { transform: rotate(360deg); } }
+
+/* Sits inside a button in place of its label/icon while an action is in flight -
+   sized to the button's own font-size and colored via currentColor so it matches
+   whatever variant (primary/outline/danger) it's dropped into. */
+.btn-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  opacity: 0.85;
+  animation: mp-spin 0.6s linear infinite;
+  vertical-align: -2px;
+}
+.btn-spinner-danger {
+  border-color: var(--danger);
+  border-right-color: transparent;
+}
+
+/* Bigger, centered spinner for a whole empty-state area (e.g. "loading your stocks"). */
+.loading-ring {
+  display: inline-block;
+  width: 34px;
+  height: 34px;
+  border: 3px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: mp-spin 0.7s linear infinite;
+}
+
 /* Empty state */
 .empty-state {
   display: flex;
@@ -670,6 +1036,9 @@ html[dir="rtl"] .settings-fab {
 }
 .video-url-input:focus { border-color: var(--primary); background: var(--surface); }
 .video-url-input::placeholder { color: var(--text-muted); }
+.videolib {
+  position: relative;
+}
 .videolib vg-player {
   display: block;
   margin-top: 4px;
@@ -677,4 +1046,36 @@ html[dir="rtl"] .settings-fab {
   overflow: hidden;
   box-shadow: var(--shadow-md);
 }
-.videolib video { width: 100%; height: auto; display: block; }
+.videolib video { width: 100%; height: auto; display: block; background: #0a0e14; }
+/* Sits over the (otherwise empty black) player until a file/URL is loaded - a bare unstyled
+   <video> with no source just reads as a broken/loading element, not "nothing chosen yet". */
+.video-placeholder {
+  position: absolute;
+  inset: 4px 0 0 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 220px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(145deg, #0f1420 0%, #1a2130 100%);
+  color: rgba(255, 255, 255, 0.55);
+  pointer-events: none;
+}
+.video-placeholder .bi {
+  font-size: 2rem;
+  opacity: 0.6;
+  margin-bottom: 4px;
+}
+.video-placeholder p {
+  margin: 0;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.95rem;
+}
+.video-placeholder span {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.45);
+}

@@ -880,6 +880,28 @@ html[dir="rtl"] .settings-fab {
 }
 .btn-icon-danger:hover { background: var(--danger-light, rgba(239, 68, 68, 0.1)); color: var(--danger); }
 
+/* Same icon-button box model as .btn-icon-danger, primary coloring for a non-destructive
+   per-row action (e.g. "resolve ATM options" on an INDEX row). Colored at rest (not just on
+   :hover like .btn-icon-danger) - these two sit directly adjacent in the same row with opposite
+   semantics (additive vs. destructive), and at-rest-transparent-until-hover made them visually
+   identical (same size/shape/muted color) until the pointer was already over one of them. */
+.btn-icon-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: var(--primary-light);
+  color: var(--primary);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.btn-icon-outline:hover:not(:disabled) { background: var(--primary); color: #fff; }
+.btn-icon-outline:disabled { cursor: default; opacity: 0.6; }
+
 /* Search bar */
 .search-bar {
   display: flex;

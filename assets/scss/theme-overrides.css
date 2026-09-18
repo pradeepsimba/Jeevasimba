@@ -1060,6 +1060,18 @@ html[dir="rtl"] .settings-fab {
 .video-url-input::placeholder { color: var(--text-muted); }
 .videolib {
   position: relative;
+  /* .video-placeholder (absolutely positioned, min-height 220px, inset 4px 0 0 0) overlays this
+     container - but .videolib's own height comes only from its one IN-FLOW child, the <video>
+     element, which browsers default to ~150px tall when it has no source loaded yet. Without
+     this, the placeholder (220px + its 4px top inset = 224px) overflowed 74px past the bottom of
+     a .videolib that was only 150px tall, and .page-card's overflow:hidden (a couple levels up)
+     silently clipped that overflow off - so the empty-state placeholder appeared cut off, at
+     EVERY screen width, not just narrow ones. Matches .video-placeholder's own min-height so the
+     container is always at least as tall as the overlay it's meant to fully contain. Once a real
+     video loads, the <video> element's own (much taller) real aspect ratio takes over here
+     naturally - this floor only matters for the empty state.
+  */
+  min-height: 224px;
 }
 .videolib vg-player {
   display: block;
